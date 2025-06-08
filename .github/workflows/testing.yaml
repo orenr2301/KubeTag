@@ -19,7 +19,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.23.x
+          go-version: 1.22.x
 
       - name: Run unit tests
         env:
@@ -27,10 +27,8 @@ jobs:
           DEFAULT_LABELS: '{"owner":"orenr","env":"shared"}'
         run: go test -v -coverprofile=coverage.out ./pkg/...
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          files: ./coverage.out 
+      - name: Show coverage summary
+        run: go tool cover -func=coverage.out
     #   - name: Test
     #     run: make test
 
