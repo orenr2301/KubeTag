@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubetag
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubetag
+  template:
+    metadata:
+      labels:
+        app: kubetag
+    spec:
+      serviceAccountName: kubetag-controller-sa
+      containers:
+        - name: kubetag
+          image: kubetag:latest
+          env:
+            - name: NAMESPACES
+              value: '[{"name":"dev","labels":{"team":"devops"}},{"name":"prod","labels":{"team":"backend"}}]'
+            - name: DEFAULT_LABELS
+              value: '{"owner":"orenr","env":"shared"}'
