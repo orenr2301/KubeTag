@@ -54,7 +54,7 @@ func WatchNS(clientset *kubernetes.Clientset, defaultLabels map[string]string) {
 
 		switch event.Type {
 		case watch.Added:
-			fmt.Printf("New Namesapce added: $s\n", namespace.Name)
+			fmt.Printf("New Namesapce added: %s\n", namespace.Name)
 			if len(defaultLabels) > 0 {
 				err := LabelNamespace(clientset, namespace.Name, defaultLabels)
 				if err != nil {

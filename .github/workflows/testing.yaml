@@ -1,0 +1,70 @@
+name: Go Unit Tests 
+
+
+on: 
+    pull_request:
+        branches:
+            - main
+    push:
+        branches:
+            - main
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.22.x
+
+      - name: Run unit tests
+        env:
+          NAMESPACES: '[{"name":"dev","labels":{"team":"devops"}},{"name":"prod","labels":{"team":"backend"}}]'
+          DEFAULT_LABELS: '{"owner":"orenr","env":"shared"}'
+        run: go test -v -coverprofile=coverage.out ./pkg/...
+
+      - name: Show coverage summary
+        run: go tool cover -func=coverage.out
+    #   - name: Test
+    #     run: make test
+
+#   integration-tests:
+#     needs: unit-tests
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+
+#       # Setup kind cluster
+#       - uses: engineerd/setup-kind@v0.5.0
+#         with:
+#           wait: 300s
+#           version: v0.20.1
+#           image: kindest/node:v1.29.2
+
+
+#       # Setup Go
+#       - uses: actions/setup-go@v2
+#         with:
+#           go-version: '1.24.x'
+
+#       # Setup required tools
+#       - name: Install Operator SDK
+#         run: |
+#           curl -LO https://github.com/operator-framework/operator-sdk/releases/download/v${{ env.OPERATOR_SDK_VERSION }}/operator-sdk-v${{ env.OPERATOR_SDK_VERSION }}-x86_64-linux-gnu
+#           chmod +x operator-sdk-v${{ env.OPERATOR_SDK_VERSION }}-x86_64-linux-gnu
+#           mv operator-sdk-v${{ env.OPERATOR_SDK_VERSION }}-x86_64-linux-gnu /usr/local/bin/operator-sdk
+#         env:
+#           OPERATOR_SDK_VERSION: 0.19.2
+
+#       #  Run tests
+#       - name: E2E Tests
+#         run: make integration-test
+#         env:
+#           ACR_CLIENT_SECRET: ${{ secrets.WORKFLOW_SECRET }}
+#           TEST_USE_EXISTING_CLUSTER: "true"
+#           WATCH_NAMESPACE: ""
+#           OPERATOR_NAME: "helloworld"

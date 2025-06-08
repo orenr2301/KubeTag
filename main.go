@@ -4,7 +4,7 @@ import (
 	
 	"encoding/json"
 	"fmt"
-	"ns-manager/privileger/pkg/watcher"
+	"github.com/orenr2301/KubeTag/pkg/watcher"
 	"os"
 
 	
@@ -39,10 +39,13 @@ func main() {
 
 	//Iterating over each namesapce and apply labels
 	for _, ns := range namespaces {
-		mergedLabels := make(map[string]string)
+		mergedLabels := make(map[string]string) //Mapping object to store the default labels 
 		if len(defaultLabels) > 0 {
 			for key, value := range defaultLabels {
-				mergedLabels[key] = value
+				mergedLabels[key] = value //setting the default labels key value pairs
+				// if ns.Labels == nil {
+				// 	ns.Labels = make(map[string]string) //if labels are not set, create a new map
+				// }
 			}
 		}
 		for key, value := range ns.Labels {
