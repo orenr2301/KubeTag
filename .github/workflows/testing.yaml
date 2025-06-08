@@ -20,6 +20,14 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: 1.22.x
+    
+      - name: Install envtest tools
+        run: |
+            go install sigs.k8s.io/controller-runtime/tools/setup-envtest@latest
+            echo "KUBEBUILDER_ASSETS=$(setup-envtest use latest -p .)" >> $GITHUB_ENV
+
+      - name: Run envtest-based tests
+        run: go test -v ./pkg/...
 
       - name: Run unit tests
         env:
