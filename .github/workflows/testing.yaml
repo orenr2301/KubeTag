@@ -19,13 +19,13 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: 1.24.x
+          go-version: 1.23.x
 
       - name: Run unit tests
         env:
           NAMESPACES: '[{"name":"dev","labels":{"team":"devops"}},{"name":"prod","labels":{"team":"backend"}}]'
           DEFAULT_LABELS: '{"owner":"orenr","env":"shared"}'
-        run: go test -v ./pkg/...
+        run: go test -v -coverprofile=coverage.out ./pkg/...
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
