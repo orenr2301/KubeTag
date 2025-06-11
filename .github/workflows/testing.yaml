@@ -67,9 +67,10 @@ jobs:
         run: kind load docker-image kubetag:latest
 
       - name: Deploy RBAC
-        run: kubectl apply -f deploy/manifests/serviceAccount.yaml
-            kubectl apply -f deploy/manifests/clusterRole.yaml
-            kubectl apply -f deploy/manifests/clusterRoleBinding.yaml
+        run: |
+             kubectl apply -f deploy/manifests/serviceAccount.yaml
+             kubectl apply -f deploy/manifests/clusterRole.yaml
+             kubectl apply -f deploy/manifests/clusterRoleBinding.yaml
 
       - name: Deploy app to kind
         run: kubectl apply -f deploy/manifests/kubetag-deployment.yaml
