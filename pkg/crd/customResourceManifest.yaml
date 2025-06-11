@@ -1,0 +1,38 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: nslabelset.kubetag.io
+spec:
+  group: kubetag.io
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+           spec: 
+             type: object
+             properties:
+               namespace:
+                 type: string
+               labels:
+                  type: object
+                  additionalProperties:
+                    type: string
+        status:
+          type: object
+          properties:
+           applied:
+             type: boolean
+           message:
+             type: string
+scope: Namespaced
+names:
+  plural: nslabelsets
+  singular: nslabelset
+  kind: NsLabelSet
+  shortNames:
+    - nslbl
+    - nslbls
