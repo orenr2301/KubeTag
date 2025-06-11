@@ -17,7 +17,7 @@ spec:
       containers:
         - name: kubetag
           image: kubetag:latest
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           env:
           - name: NAMESPACES
             value: '[{"name":"dev","labels":{"team":"devops"}},{"name":"prod","labels":{"team":"backend"}}]'
