@@ -18,7 +18,7 @@ spec:
         - name: kubetag
           image: kubetag:latest
           env:
-            - name: NAMESPACES
-              value: '[{"name":"dev","labels":{"team":"devops"}},{"name":"prod","labels":{"team":"backend"}}]'
-            - name: DEFAULT_LABELS
-              value: '{"owner":"orenr","env":"shared"}'
+          - name: NAMESPACES
+            value: '[{"name":"dev","labels":{"team":"devops"}},{"name":"prod","labels":{"team":"backend"}}]'
+          - name: DEFAULT_LABELS
+            value: '{"owner":"orenr","env":"shared"}'

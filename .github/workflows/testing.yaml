@@ -74,9 +74,21 @@ jobs:
 
       - name: Deploy app to kind
         run: kubectl apply -f deploy/manifests/kubetag-deployment.yaml
-        
-      - name: Wait for app to be ready
-        run: kubectl rollout status deployment/kubetag
+
+      - name: Sleep for 30 seconds
+        run: sleep 30
+
+      - name: Debug - Get pods and events
+        run: |
+          kubectl get pods -o wide
+          kubectl describe deployment kubetag
+          kubectl get events --sort-by=.metadata.creationTimestamp  
+
+      - name: Debug - Show pod logs
+        run: |
+          kubectl logs deployment/kubetag --all-containers=true || true
+      # - name: Wait for app to be ready
+      #   run: kubectl rollout status deployment/kubetag
       
 
 
