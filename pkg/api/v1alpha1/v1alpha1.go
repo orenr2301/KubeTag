@@ -42,6 +42,7 @@ copy CR object without affecting the other CR struct located in memory
 ***/
 
 // The Single Card Item with fields
+//Used internally when you want a true, independent copy of a single CR object (not as an interface).
 func (in *NsLabelSet) DeepCopy() *NsLabelSet {
 	if in == nil {
 		return nil
@@ -57,7 +58,8 @@ func (in *NsLabelSet) DeepCopy() *NsLabelSet {
 	return out
 }
 
-// The Single Card Item Structure - the CR Single Resource 
+// The Single Card Item Structure - the CR Single Resource
+//Required by Kubernetes API machinery and controller-runtime, which work with the runtime.Object interface for generic handling of resources.
 func (in *NsLabelSet) DeepCopyObject() runtime.Object {
 
 	if in == nil {
@@ -76,6 +78,7 @@ func (in *NsLabelSet) DeepCopyObject() runtime.Object {
 }
 
 // The The list of cards the actual binder - the list of CRs of the the same type object - List of Resource 
+//Required by Kubernetes API machinery for handling lists of resources (e.g., when you do kubectl get NsLabelSet and get multiple results).
 func (in *NsLabelSetList) DeepCopyObject() runtime.Object {
 
 	if in == nil {
@@ -92,3 +95,14 @@ func (in *NsLabelSetList) DeepCopyObject() runtime.Object {
 	}
 	return out
 }
+
+/***
+Method Name	What it copies	Return Type	Used for...
+DeepCopy()	One CR object	*NsLabelSet	Internal use, copying one object
+DeepCopyObject() (single)	One CR object	runtime.Object	API machinery, generic handling
+DeepCopyObject() (list)	List of CR objects	runtime.Object	API machinery, lists of resources
+
+DeepCopy() is for copying one object (returns the concrete type).
+DeepCopyObject() is for copying one object or a list, but returns the generic runtime.Object interface (required by Kubernetes internals).
+The list version loops over all items and uses the single-object DeepCopy() for each.
+***/
